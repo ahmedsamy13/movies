@@ -1,14 +1,11 @@
 import axios from "axios";
 
-const api = axios.create({
-  baseURL: import.meta.env.VITE_API_URL, // from .env
-  headers: { "Content-Type": "application/json" },
+const axiosInstance = axios.create({
+  baseURL: "https://api.simkl.com/",
+  headers: {
+    "simkl-api-key":
+      "71d565fcfecb28bff9dc63ea3f245217636b96af9a0426a44cc5d5dd8085fe35",
+  },
 });
 
-api.interceptors.request.use((config) => {
-  const token = localStorage.getItem("token");
-  if (token) config.headers.Authorization = `Bearer ${token}`;
-  return config;
-});
-
-export default api;
+export default axiosInstance;

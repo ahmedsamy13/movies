@@ -2,7 +2,6 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import api from "@/services/api";
 import { API_ENDPOINTS } from "@/constants";
 
-// ✅ بيعمل login ويجيب الـ token من الـ API
 export const loginUser = createAsyncThunk(
   "auth/loginUser",
   async ({ email, password }, thunkAPI) => {

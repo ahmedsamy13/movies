@@ -4,13 +4,17 @@ import { Outlet } from "react-router-dom";
 
 const AppLayout = () => {
   return (
-    <div className="grid h-screen grid-rows-[auto_1fr_auto]">
+    // min-h-screen تضمن أن الصفحة تأخذ كامل طول الشاشة
+    <div className="min-h-screen flex flex-col bg-[#0a0a0a] text-white">
       <Navbar />
-      <div className="overflow-scroll">
-        <main className="mx-auto max-w-3xl">
-          <Outlet />
-        </main>
-      </div>
+
+      {/* - تمت إزالة flex-1 إذا كنت لا تريد تمطيط المحتوى الصغير ليشغل الصفحة
+         - تقليل الـ py-8 إلى pt-6 (padding top) لتقريب المحتوى من الناف بار
+      */}
+      <main className="w-[90%] max-w-[1400px] mx-auto pt-6 pb-12 animate-fadeIn flex-grow">
+        <Outlet />
+      </main>
+
       <Footer />
     </div>
   );

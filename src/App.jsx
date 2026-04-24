@@ -2,8 +2,11 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import "./App.css";
 import AppLayout from "./components/layout/AppLayout";
 import ProtectedRoute from "./components/ProtectedRoute";
-import Login from "./features/auth/pages/Login";
-import Home from "./features/home/pages/Home";
+import Login from "./pages/Login";
+import Home from "./pages/Home";
+import Movies from "./pages/Movies";
+import Movie from "./pages/Movie";
+import SignUp from "./pages/SignUp";
 
 const router = createBrowserRouter([
   {
@@ -15,13 +18,20 @@ const router = createBrowserRouter([
         element: <Login />,
       },
       {
-        element: <ProtectedRoute />,
-        children: [
-          {
-            path: "home",
-            element: <Home />,
-          },
-        ],
+        path: "home",
+        element: <Home />,
+      },
+      {
+        path: "/movies",
+        element: <Movies />,
+      },
+      {
+        path: "/movies/:movieId",
+        element: <Movie />,
+      },
+      {
+        path: "/signup",
+        element: <SignUp />,
       },
     ],
   },
