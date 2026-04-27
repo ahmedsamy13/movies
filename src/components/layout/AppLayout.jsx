@@ -1,17 +1,25 @@
 import Navbar from "./Navbar";
 import Footer from "./Footer";
-import { Outlet } from "react-router-dom";
+import { Outlet, useLocation } from "react-router-dom";
 
 const AppLayout = () => {
+  const { pathname } = useLocation();
+
+  // هل نحن في صفحة تفاصيل الفيلم؟
+  // إذا كانت الإجابة نعم، سنلغي الـ Padding والـ Width المقيّد لنسمح للخلفية بالانتشار
+  const isMoviePage = pathname.startsWith("/movie/");
+
   return (
-    // min-h-screen تضمن أن الصفحة تأخذ كامل طول الشاشة
     <div className="min-h-screen flex flex-col bg-[#0a0a0a] text-white">
       <Navbar />
 
-      {/* - تمت إزالة flex-1 إذا كنت لا تريد تمطيط المحتوى الصغير ليشغل الصفحة
-         - تقليل الـ py-8 إلى pt-6 (padding top) لتقريب المحتوى من الناف بار
-      */}
-      <main className="w-[90%] max-w-[1400px] mx-auto pt-6 pb-12 animate-fadeIn flex-grow">
+      <main
+        className={`mx-auto animate-fadeIn flex-grow transition-all duration-500 ${
+          isMoviePage
+            ? "w-full" // في صفحة الفيلم خذ العرض الكامل
+            : "w-[90%] max-w-[1400px] pt-6 pb-12" // في باقي الصفحات التزم بالتنسيق القديم
+        }`}
+      >
         <Outlet />
       </main>
 

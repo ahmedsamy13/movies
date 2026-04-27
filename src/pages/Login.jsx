@@ -1,15 +1,28 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { loginUser } from "@/features/auth/authSlice";
 
 export default function Login() {
   const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const handleLogin = (e) => {
+  // جلب الحالة من Redux
+  const { isLoading, error } = useSelector((state) => state.auth);
+
+  const handleLogin = async (e) => {
     e.preventDefault();
-    // Simulate login by storing dummy data
-    localStorage.setItem("user", JSON.stringify({ email, name: "User" }));
-    navigate("/home");
+
+    // إرسال البيانات للـ Thunk اللي بيكلم Supabase
+    const result = await dispatch(loginUser({ email, password }));
+
+    // لو العملية نجحت (fulfilled)
+    if (loginUser.fulfilled.match(result)) {
+      navigate("/home"); // أو /movies حسب المسار عندك
+    }
   };
 
   return (
@@ -25,24 +38,43 @@ export default function Login() {
           </p>
         </div>
 
+        {/* عرض رسالة الخطأ من Supabase لو موجودة */}
+        {error && (
+          <div className="mb-6 p-4 bg-red-500/10 border border-red-500/50 rounded-xl text-red-500 text-sm font-medium animate-shake">
+            ⚠️ {error}
+          </div>
+        )}
+
         <div className="space-y-4">
           <input
             type="email"
             placeholder="Email Address"
-            className="w-full p-4 bg-zinc-800 rounded-xl text-white border border-transparent focus:border-blue-600 outline-none transition-all"
+            value={email}
+            disabled={isLoading}
+            className="w-full p-4 bg-zinc-800 rounded-xl text-white border border-transparent focus:border-blue-600 outline-none transition-all disabled:opacity-50"
             onChange={(e) => setEmail(e.target.value)}
             required
           />
           <input
             type="password"
             placeholder="Password"
-            className="w-full p-4 bg-zinc-800 rounded-xl text-white border border-transparent focus:border-blue-600 outline-none transition-all"
+            value={password}
+            disabled={isLoading}
+            onChange={(e) => setPassword(e.target.value)}
+            className="w-full p-4 bg-zinc-800 rounded-xl text-white border border-transparent focus:border-blue-600 outline-none transition-all disabled:opacity-50"
             required
           />
         </div>
 
-        <button className="w-full bg-blue-600 hover:bg-blue-700 text-white p-4 rounded-xl font-bold mt-8 transition-all shadow-lg shadow-blue-900/20">
-          Login
+        <button
+          disabled={isLoading}
+          className="w-full bg-blue-600 hover:bg-blue-700 text-white p-4 rounded-xl font-bold mt-8 transition-all shadow-lg shadow-blue-900/20 disabled:bg-zinc-700 disabled:cursor-not-allowed flex items-center justify-center"
+        >
+          {isLoading ? (
+            <div className="h-5 w-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
+          ) : (
+            "Login"
+          )}
         </button>
 
         <p className="text-center text-gray-400 mt-8 text-sm">

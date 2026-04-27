@@ -1,23 +1,66 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import api from "@/services/api";
-import { API_ENDPOINTS } from "@/constants";
+import { supabase } from "@/services/supabase"; // الملف اللي عملناه امبارح
 
+// 1. ثنك لتسجيل مستخدم جديد (Sign Up)
+export const signUpUser = createAsyncThunk(
+  "auth/signUp",
+  async ({ email, password, fullName }, thunkAPI) => {
+    try {
+      const { data, error } = await supabase.auth.signUp({
+        email,
+        password,
+        options: {
+          data: {
+            full_name: fullName,
+          },
+        },
+      });
+
+      if (error) throw error;
+
+      return {
+        user: data.user,
+        session: data.session,
+      };
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.message);
+    }
+  },
+);
+
+// 2. ثنك لتسجيل الدخول (Login)
 export const loginUser = createAsyncThunk(
-  "auth/loginUser",
+  "auth/login",
   async ({ email, password }, thunkAPI) => {
     try {
-      const response = await api.post(API_ENDPOINTS.LOGIN, { email, password });
-      return response.data;
+      const { data, error } = await supabase.auth.signInWithPassword({
+        email,
+        password,
+      });
+      if (error) throw error;
+      // Supabase بيرجع اليوزر والسيشن، احنا محتاجين اليوزر
+      return data.user;
     } catch (error) {
-      return thunkAPI.rejectWithValue(error.response.data.message);
+      return thunkAPI.rejectWithValue(error.message);
+    }
+  },
+);
+
+// 3. ثنك لتسجيل الخروج (Logout)
+export const logoutUser = createAsyncThunk(
+  "auth/logout",
+  async (_, thunkAPI) => {
+    try {
+      const { error } = await supabase.auth.signOut();
+      if (error) throw error;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.message);
     }
   },
 );
 
 const initialState = {
-  name: "",
-  email: "",
-  token: null,
+  user: null, // بنخزن كائن اليوزر كامل اللي جاي من سوبابيز
   isAuthenticated: false,
   isLoading: false,
   error: null,
@@ -27,24 +70,15 @@ const authSlice = createSlice({
   name: "auth",
   initialState,
   reducers: {
-    setUser: (state, action) => {
-      state.name = action.payload.name;
-      state.email = action.payload.email;
-      state.token = action.payload.token;
-      state.isAuthenticated = true;
-    },
-    logout: (state) => {
-      state.name = "";
-      state.email = "";
-      state.token = null;
-      state.isAuthenticated = false;
-      localStorage.removeItem("token");
+    // دالة مهمة عشان نحدث الحالة لو اليوزر عامل LoggedIn أصلاً
+    setSession: (state, action) => {
+      state.user = action.payload;
+      state.isAuthenticated = !!action.payload;
     },
   },
-
-  // ✅ بيتعامل مع الـ loginUser
   extraReducers: (builder) => {
     builder
+      // Login Cases
       .addCase(loginUser.pending, (state) => {
         state.isLoading = true;
         state.error = null;
@@ -52,17 +86,34 @@ const authSlice = createSlice({
       .addCase(loginUser.fulfilled, (state, action) => {
         state.isLoading = false;
         state.isAuthenticated = true;
-        state.name = action.payload.name;
-        state.email = action.payload.email;
-        state.token = action.payload.token;
-        localStorage.setItem("token", action.payload.token);
+        state.user = action.payload;
       })
       .addCase(loginUser.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.payload;
+      })
+      // Logout Case
+      .addCase(logoutUser.fulfilled, (state) => {
+        state.user = null;
+        state.isAuthenticated = false;
+      })
+      // SignUp Cases
+      .addCase(signUpUser.pending, (state) => {
+        state.isLoading = true;
+        state.error = null; // ← كمان دي ناقصة
+      })
+      .addCase(signUpUser.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.user = action.payload.user;
+        state.isAuthenticated = !!action.payload.session;
+      })
+      .addCase(signUpUser.rejected, (state, action) => {
+        // ← الـ case الناقصة
         state.isLoading = false;
         state.error = action.payload;
       });
   },
 });
 
-export const { setUser, logout } = authSlice.actions;
+export const { setSession } = authSlice.actions;
 export default authSlice.reducer;
