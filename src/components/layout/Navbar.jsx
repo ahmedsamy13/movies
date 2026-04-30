@@ -27,12 +27,23 @@ const Navbar = () => {
       <div className="max-w-7xl mx-auto flex items-center justify-between gap-4">
         {/* 1. Logo */}
         <Link to="/home" className="flex items-center gap-2 z-[110]">
-          <div className="w-9 h-9 bg-blue-600 rounded-xl flex items-center justify-center font-bold text-white shadow-lg shadow-blue-500/20 transform hover:rotate-12 transition-transform">
-            S
+          <div className="relative w-9 h-9 flex-shrink-0">
+            {/* Icon */}
+            <div className="w-9 h-9 bg-gradient-to-br from-blue-600 to-blue-800 rounded-xl flex items-center justify-center shadow-lg shadow-blue-500/20">
+              <span className="text-lg">🎬</span>
+            </div>
+            {/* Dot */}
+            <span className="absolute -top-0.5 -right-0.5 w-2.5 h-2.5 bg-red-500 rounded-full border-2 border-zinc-950" />
           </div>
-          <span className="text-xl font-black tracking-tighter text-white uppercase hidden sm:block">
-            Simkl<span className="text-blue-500">Clone</span>
-          </span>
+
+          <div className="hidden sm:flex flex-col leading-none">
+            <span className="text-white font-black text-base tracking-tight uppercase">
+              Movie
+            </span>
+            <span className="text-blue-500 font-black text-base tracking-tight uppercase">
+              Night
+            </span>
+          </div>
         </Link>
 
         {/* 2. Desktop Navigation & Search */}

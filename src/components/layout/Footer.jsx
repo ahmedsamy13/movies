@@ -6,14 +6,25 @@ const Footer = () => {
       <div className="max-w-7xl mx-auto px-6">
         <div className="flex flex-col md:flex-row justify-between items-center gap-8">
           {/* Logo Section */}
-          <div className="flex items-center gap-2">
-            <div className="w-6 h-6 bg-blue-600 rounded flex items-center justify-center font-bold text-white text-xs">
-              S
+          <Link to="/home" className="flex items-center gap-2 z-[110]">
+            <div className="relative w-9 h-9 flex-shrink-0">
+              {/* Icon */}
+              <div className="w-9 h-9 bg-gradient-to-br from-blue-600 to-blue-800 rounded-xl flex items-center justify-center shadow-lg shadow-blue-500/20">
+                <span className="text-lg">🎬</span>
+              </div>
+              {/* Dot */}
+              <span className="absolute -top-0.5 -right-0.5 w-2.5 h-2.5 bg-red-500 rounded-full border-2 border-zinc-950" />
             </div>
-            <span className="text-lg font-black tracking-tighter text-white uppercase">
-              Simkl<span className="text-blue-500">Clone</span>
-            </span>
-          </div>
+
+            <div className="hidden sm:flex flex-col leading-none">
+              <span className="text-white font-black text-base tracking-tight uppercase">
+                Movie
+              </span>
+              <span className="text-blue-500 font-black text-base tracking-tight uppercase">
+                Night
+              </span>
+            </div>
+          </Link>
 
           {/* Navigation Links */}
 
