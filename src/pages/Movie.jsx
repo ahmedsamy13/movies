@@ -5,6 +5,7 @@ import {
   fetchMovieById,
   clearSelectedMovie,
 } from "@/features/movies/movieSlice";
+import { addItem } from "@/features/watchList/watchListSlice";
 
 export default function Movie() {
   const { movieId } = useParams();
@@ -24,7 +25,17 @@ export default function Movie() {
       dispatch(clearSelectedMovie());
     };
   }, [dispatch, movieId]);
-
+  function handleAddToWatchList(e) {
+    e.preventDefault();
+    const newMovie = {
+      id: String(movieId),
+      rating: movie.ratings?.imdb?.rating,
+      runtime: movie.runtime,
+      poster: `https://simkl.in/posters/${movie.poster}_m.jpg`,
+      year: movie.year,
+    };
+    dispatch(addItem(newMovie));
+  }
   if (loading) {
     return (
       <div className="min-h-screen bg-[#0a0a0a] flex items-center justify-center">
@@ -116,10 +127,10 @@ export default function Movie() {
 
             {/* Buttons */}
             <div className="mt-8 flex gap-4">
-              <button className="bg-blue-600 px-8 py-3 rounded-xl font-bold hover:bg-blue-700 active:scale-95 transition shadow-lg">
-                ▶ Watch
-              </button>
-              <button className="bg-zinc-800 px-8 py-3 rounded-xl font-bold hover:bg-zinc-700 active:scale-95 transition">
+              <button
+                onClick={handleAddToWatchList}
+                className="bg-zinc-800 px-8 py-3 rounded-xl font-bold hover:bg-zinc-700 active:scale-95 transition"
+              >
                 + My List
               </button>
             </div>

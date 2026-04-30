@@ -62,7 +62,7 @@ export const logoutUser = createAsyncThunk(
 const initialState = {
   user: null, // بنخزن كائن اليوزر كامل اللي جاي من سوبابيز
   isAuthenticated: false,
-  isLoading: false,
+  isLoading: true,
   error: null,
 };
 
@@ -74,6 +74,7 @@ const authSlice = createSlice({
     setSession: (state, action) => {
       state.user = action.payload;
       state.isAuthenticated = !!action.payload;
+      state.isLoading = false; // ← مهم
     },
   },
   extraReducers: (builder) => {

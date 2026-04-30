@@ -2,7 +2,6 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import "./App.css";
 import AppLayout from "./components/layout/AppLayout";
 import ProtectedRoute from "./components/ProtectedRoute";
-
 import Login from "./pages/Login";
 import Home from "./pages/Home";
 import Movies from "./pages/Movies";
@@ -10,50 +9,31 @@ import Movie from "./pages/Movie";
 import SignUp from "./pages/SignUp";
 import TVs from "./pages/TVs";
 import TV from "./pages/TV";
+import WatchList from "./pages/WatchList";
+import Search from "./pages/Search";
+import { useDispatch } from "react-redux";
+import { useEffect } from "react";
+import { setSession } from "./features/auth/authSlice";
+import { supabase } from "./services/supabase";
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: <AppLayout />,
     children: [
-      // 1. مسارات عامة (Public) - متاحة للكل
-      {
-        index: true, // دي بتخلي الهوم هي الصفحة الافتراضية أول ما يفتح الموقع "/"
-        element: <Home />,
-      },
-      {
-        path: "home", // اختياري لو عايز "/home" تشتغل برضو
-        element: <Home />,
-      },
-      {
-        path: "login",
-        element: <Login />,
-      },
-      {
-        path: "signup",
-        element: <SignUp />,
-      },
-
-      // 2. مسارات محمية (Protected) - لازم تسجيل دخول
+      { index: true, element: <Home /> },
+      { path: "home", element: <Home /> },
+      { path: "login", element: <Login /> },
+      { path: "signup", element: <SignUp /> },
       {
         element: <ProtectedRoute />,
         children: [
-          {
-            path: "movies",
-            element: <Movies />,
-          },
-          {
-            path: "movies/:movieId",
-            element: <Movie />,
-          },
-          {
-            path: "/tvs",
-            element: <TVs />,
-          },
-          {
-            path: "/tvs/:tvId",
-            element: <TV />,
-          },
+          { path: "movies", element: <Movies /> },
+          { path: "movies/:movieId", element: <Movie /> },
+          { path: "/series", element: <TVs /> },
+          { path: "/series/:serieId", element: <TV /> },
+          { path: "watchlist", element: <WatchList /> },
+          { path: "/search", element: <Search /> },
         ],
       },
     ],
@@ -61,6 +41,24 @@ const router = createBrowserRouter([
 ]);
 
 function App() {
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    // جيب الـ session الحالية فوراً
+    supabase.auth.getSession().then(({ data }) => {
+      dispatch(setSession(data.session?.user || null));
+    });
+
+    // استنى أي تغيير
+    const { data: listener } = supabase.auth.onAuthStateChange(
+      (_event, session) => {
+        dispatch(setSession(session?.user || null));
+      },
+    );
+
+    return () => listener.subscription.unsubscribe();
+  }, []);
+
   return <RouterProvider router={router} />;
 }
 

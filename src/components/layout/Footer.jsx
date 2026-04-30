@@ -16,14 +16,6 @@ const Footer = () => {
           </div>
 
           {/* Navigation Links */}
-          <nav className="flex gap-6 text-sm font-medium text-gray-400">
-            <Link to="/home" className="hover:text-white transition-colors">
-              Home
-            </Link>
-            <Link to="/movies" className="hover:text-white transition-colors">
-              Movies
-            </Link>
-          </nav>
 
           {/* Copyrights */}
           <div className="text-gray-500 text-xs">

@@ -2,21 +2,31 @@ import { useParams, Link } from "react-router-dom";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { clearSelectedTv, fetchTvById } from "@/features/TVs/tvSlice";
+import { addItem } from "@/features/watchList/watchListSlice";
 export default function Tv() {
-  const { tvId } = useParams(); // جبنا الـ ID من الرابط
+  const { serieId } = useParams(); // جبنا الـ ID من الرابط
   const dispatch = useDispatch();
 
   const { selectedTv: tv, loading, error } = useSelector((state) => state.tv);
 
   useEffect(() => {
-    if (tvId) {
-      dispatch(fetchTvById(tvId));
+    if (serieId) {
+      dispatch(fetchTvById(serieId));
     }
     return () => {
       dispatch(clearSelectedTv());
     };
-  }, [dispatch, tvId]);
-
+  }, [dispatch, serieId]);
+  function handleAddToWatchList(e) {
+    e.preventDefault();
+    const newSerie = {
+      id: serieId,
+      rating: tv.ratings?.simkl?.rating,
+      poster: `https://simkl.in/posters/${tv.poster}_m.jpg`,
+      year: tv.year,
+    };
+    dispatch(addItem(newSerie));
+  }
   if (loading) {
     return (
       <div className="min-h-screen bg-[#0a0a0a] flex items-center justify-center">
@@ -29,7 +39,7 @@ export default function Tv() {
     return (
       <div className="min-h-screen bg-[#0a0a0a] text-white flex flex-col items-center justify-center gap-4">
         <h2 className="text-2xl font-bold text-red-500">TV Show not found</h2>
-        <Link to="/tvs" className="text-blue-500 hover:underline">
+        <Link to="/series" className="text-blue-500 hover:underline">
           Back to TV Shows
         </Link>
       </div>
@@ -50,7 +60,7 @@ export default function Tv() {
         />
         <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0a] via-[#0a0a0a]/60 to-transparent" />
         <Link
-          to="/tvs"
+          to="/series"
           className="absolute top-6 left-6 bg-black/60 backdrop-blur-md hover:bg-blue-600 px-4 py-2 rounded-full transition z-20"
         >
           ← Back
@@ -112,10 +122,10 @@ export default function Tv() {
 
             {/* Buttons */}
             <div className="mt-8 flex gap-4">
-              <button className="bg-blue-600 px-8 py-3 rounded-xl font-bold hover:bg-blue-700 active:scale-95 transition shadow-lg">
-                ▶ Watch
-              </button>
-              <button className="bg-zinc-800 px-8 py-3 rounded-xl font-bold hover:bg-zinc-700 active:scale-95 transition">
+              <button
+                onClick={handleAddToWatchList}
+                className="bg-zinc-800 px-8 py-3 rounded-xl font-bold hover:bg-zinc-700 active:scale-95 transition"
+              >
                 + My List
               </button>
             </div>

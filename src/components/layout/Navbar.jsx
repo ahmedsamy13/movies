@@ -1,108 +1,189 @@
 import { useSelector, useDispatch } from "react-redux";
 import { Link, NavLink, useNavigate } from "react-router-dom";
 import { logoutUser } from "@/features/auth/authSlice";
+import { useState } from "react";
 
 const Navbar = () => {
   const { isAuthenticated, user } = useSelector((state) => state.auth);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const handleLogout = async () => {
     await dispatch(logoutUser());
     navigate("/login");
+    setIsMenuOpen(false);
   };
 
+  const navLinks = [
+    { name: "Home", path: "/home" },
+    { name: "Movies", path: "/movies" },
+    { name: "Series", path: "/series" },
+    { name: "Watchlist", path: "/watchlist" },
+  ];
+
   return (
-    <nav className="bg-zinc-950/80 backdrop-blur-md border-b border-zinc-800 sticky top-0 z-50 px-6 py-4">
-      <div className="max-w-7xl mx-auto flex items-center justify-between">
-        {/* 1. اللوجو */}
-        <Link className="flex items-center gap-2 flex-1">
-          <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center font-bold text-white shadow-lg shadow-blue-500/30">
+    <nav className="bg-zinc-950/90 backdrop-blur-xl border-b border-zinc-800/50 sticky top-0 z-[100] px-4 md:px-8 py-3">
+      <div className="max-w-7xl mx-auto flex items-center justify-between gap-4">
+        {/* 1. Logo */}
+        <Link to="/home" className="flex items-center gap-2 z-[110]">
+          <div className="w-9 h-9 bg-blue-600 rounded-xl flex items-center justify-center font-bold text-white shadow-lg shadow-blue-500/20 transform hover:rotate-12 transition-transform">
             S
           </div>
-          <span className="text-xl font-black tracking-tighter text-white uppercase">
+          <span className="text-xl font-black tracking-tighter text-white uppercase hidden sm:block">
             Simkl<span className="text-blue-500">Clone</span>
           </span>
         </Link>
 
-        {/* 2. الروابط */}
-        <div className="hidden md:flex items-center justify-center gap-8 flex-1">
-          <NavLink
-            to="/home"
-            className={({ isActive }) =>
-              isActive
-                ? "text-blue-500 border-b-2 border-blue-500"
-                : "text-gray-400 hover:text-white"
-            }
-          >
-            Home
-          </NavLink>
-          <NavLink
-            to="/movies"
-            className={({ isActive }) =>
-              isActive
-                ? "text-blue-500 border-b-2 border-blue-500"
-                : "text-gray-400 hover:text-white"
-            }
-          >
-            Movies
-          </NavLink>
-          <NavLink
-            to="/tvs"
-            className={({ isActive }) =>
-              isActive
-                ? "text-blue-500 border-b-2 border-blue-500"
-                : "text-gray-400 hover:text-white"
-            }
-          >
-            TVs
-          </NavLink>
+        {/* 2. Desktop Navigation & Search */}
+        <div className="hidden md:flex items-center gap-1 bg-zinc-900/40 p-1 rounded-2xl border border-zinc-800/50">
+          {navLinks.map((link) => (
+            <NavLink
+              key={link.path}
+              to={link.path}
+              className={({ isActive }) =>
+                `px-4 py-2 rounded-xl text-sm font-medium transition-all ${
+                  isActive
+                    ? "bg-blue-600 text-white shadow-md"
+                    : "text-zinc-400 hover:text-white hover:bg-zinc-800/50"
+                }`
+              }
+            >
+              {link.name}
+            </NavLink>
+          ))}
         </div>
 
-        {/* 3. اليوزر أو اللوجين (اليمين خالص) */}
-        <div className="flex items-center justify-end gap-4 flex-1">
+        {/* 3. Search & User Actions */}
+        <div className="flex items-center gap-3 flex-1 justify-end">
+          {/* Desktop Search */}
+          <div className="relative hidden lg:block group">
+            <svg
+              className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-zinc-500 group-focus-within:text-blue-500 transition-colors"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+              />
+            </svg>
+            <input
+              type="text"
+              placeholder="Search..."
+              onFocus={() => navigate("/search")}
+              className="bg-zinc-900/60 border border-zinc-800 text-white text-sm rounded-xl py-2 pl-10 pr-4 w-40 focus:w-60 focus:border-blue-500 focus:outline-none transition-all duration-300"
+            />
+          </div>
+
           {!isAuthenticated ? (
-            <NavLink
+            <Link
               to="/login"
-              className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2.5 rounded-xl text-sm font-bold transition-all"
+              className="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2 rounded-xl text-sm font-bold transition-all active:scale-95 shadow-lg shadow-blue-500/20"
             >
               Login
-            </NavLink>
+            </Link>
           ) : (
-            <div className="flex items-center gap-4">
-              {/* عرض اسم اليوزر (أو أول جزء من الإيميل لو مفيش اسم) */}
-              <div className="flex flex-col items-end">
-                <span className="text-xs text-gray-500 font-medium">
-                  Welcome back,
-                </span>
-                <span className="text-sm font-bold text-white">
-                  {user?.user_metadata?.full_name || user?.email?.split("@")[0]}
-                </span>
+            <div className="flex items-center gap-3 bg-zinc-900/80 p-1 pr-3 rounded-2xl border border-zinc-800">
+              <div className="w-8 h-8 bg-zinc-800 rounded-lg flex items-center justify-center text-blue-500 font-bold border border-zinc-700">
+                {user?.email?.[0].toUpperCase()}
               </div>
-
-              {/* زرار الخروج بشكل أيقونة أو زرار صغير */}
               <button
                 onClick={handleLogout}
-                className="p-2 hover:bg-red-500/10 text-gray-400 hover:text-red-500 rounded-lg transition-colors"
-                title="Logout"
+                className="p-1.5 hover:bg-red-500/10 text-zinc-500 hover:text-red-500 rounded-lg transition-colors"
               >
                 <svg
-                  xmlns="http://www.w3.org/2000/svg"
+                  className="w-5 h-5"
                   fill="none"
                   viewBox="0 0 24 24"
-                  strokeWidth={2}
                   stroke="currentColor"
-                  className="w-5 h-5"
                 >
                   <path
                     strokeLinecap="round"
                     strokeLinejoin="round"
-                    d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15m3 0l3-3m0 0l-3-3m3 3H9"
+                    strokeWidth={2}
+                    d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"
                   />
                 </svg>
               </button>
             </div>
           )}
+
+          {/* 4. Burger Button (Mobile) */}
+          <button
+            onClick={() => setIsMenuOpen(!isMenuOpen)}
+            className="md:hidden p-2 text-zinc-400 hover:text-white bg-zinc-900 rounded-xl border border-zinc-800 z-[110]"
+          >
+            <div className="w-6 h-5 relative flex flex-col justify-between">
+              <span
+                className={`w-full h-0.5 bg-current transition-all ${isMenuOpen ? "rotate-45 translate-y-2" : ""}`}
+              />
+              <span
+                className={`w-full h-0.5 bg-current transition-all ${isMenuOpen ? "opacity-0" : ""}`}
+              />
+              <span
+                className={`w-full h-0.5 bg-current transition-all ${isMenuOpen ? "-rotate-45 -translate-y-2.5" : ""}`}
+              />
+            </div>
+          </button>
+        </div>
+      </div>
+
+      {/* 5. Mobile Menu Overlay */}
+      <div
+        className={`fixed inset-0 bg-zinc-950/95 backdrop-blur-2xl z-[100] md:hidden flex flex-col pt-24 px-8 gap-6 transition-all duration-500 ${
+          isMenuOpen
+            ? "opacity-100 translate-x-0"
+            : "opacity-0 translate-x-full pointer-events-none"
+        }`}
+      >
+        {/* Mobile Search */}
+        <div className="relative w-full">
+          <input
+            type="text"
+            placeholder="Search movies & shows..."
+            onClick={() => {
+              navigate("/search");
+              setIsMenuOpen(false);
+            }}
+            className="w-full bg-zinc-900 border border-zinc-800 py-4 pl-12 rounded-2xl text-white outline-none focus:border-blue-500"
+          />
+          <svg
+            className="w-5 h-5 absolute left-4 top-1/2 -translate-y-1/2 text-zinc-500"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+            />
+          </svg>
+        </div>
+
+        {/* Mobile Links */}
+        <div className="flex flex-col gap-4">
+          {navLinks.map((link) => (
+            <NavLink
+              key={link.path}
+              to={link.path}
+              onClick={() => setIsMenuOpen(false)}
+              className={({ isActive }) =>
+                `text-2xl font-bold p-4 rounded-2xl transition-all ${
+                  isActive
+                    ? "bg-blue-600 text-white"
+                    : "text-zinc-500 hover:text-white bg-zinc-900/50"
+                }`
+              }
+            >
+              {link.name}
+            </NavLink>
+          ))}
         </div>
       </div>
     </nav>

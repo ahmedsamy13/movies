@@ -1,10 +1,23 @@
+import { addItem } from "@/features/watchList/watchListSlice";
+import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 
 export default function Card({ show }) {
   const poster = `https://wsrv.nl/?url=https://simkl.in/posters/${show.poster}_m.webp`;
   const year = show.release_date?.split("/")[2];
   const isPremierre = show.status === "premiere";
-
+  const dispatch = useDispatch();
+  function handleAddToWatchList(e) {
+    e.preventDefault();
+    const newMovie = {
+      id: show.ids.simkl_id,
+      rating: show.ratings?.imdb?.rating,
+      runtime: show.runtime,
+      poster: poster,
+      year: show.year,
+    };
+    dispatch(addItem(newMovie));
+  }
   return (
     <Link
       to={`/movies/${show.ids.simkl_id}`}
@@ -55,7 +68,10 @@ export default function Card({ show }) {
             <span className="text-[#f5c518]">★</span>
             {show.ratings?.simkl?.rating}
           </div>
-          <button className="w-[26px] h-[26px] rounded-full bg-white/[0.08] border border-white/15 text-white text-sm flex items-center justify-center hover:bg-white/[0.18] transition-colors">
+          <button
+            onClick={handleAddToWatchList}
+            className="w-[26px] h-[26px] rounded-full bg-white/[0.08] border border-white/15 text-white text-sm flex items-center justify-center hover:bg-white/[0.18] transition-colors"
+          >
             +
           </button>
         </div>
