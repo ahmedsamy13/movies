@@ -38,8 +38,8 @@ export default function Search() {
   };
 
   return (
-    <div className="min-h-screen bg-[#0a0a0a] text-white">
-      <div className="sticky top-0 z-10 bg-[#0a0a0a]/80 backdrop-blur-md border-b border-white/[0.06] px-4 py-4">
+    <div className="text-white">
+      <div className="sticky top-[57px] z-10 bg-[#0a0a0a]/80 backdrop-blur-md border-b border-white/[0.06] -mx-[5vw] px-4 py-4">
         <div className="max-w-2xl mx-auto relative">
           <span className="absolute left-4 top-1/2 -translate-y-1/2 text-white/30 text-lg">
             🔍
@@ -77,7 +77,7 @@ export default function Search() {
         </div>
       </div>
 
-      <div className="max-w-7xl mx-auto px-4 py-8">
+      <div className="py-8">
         {results.length > 0 && (
           <>
             <p className="text-white/40 text-sm mb-6">

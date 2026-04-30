@@ -21,7 +21,7 @@ export default function Card({ show }) {
   return (
     <Link
       to={`/movies/${show.ids.simkl_id}`}
-      className="group relative w-[180px] rounded-[14px] overflow-hidden bg-[#111] cursor-pointer flex-shrink-0"
+      className="group relative w-full rounded-[14px] overflow-hidden bg-[#111] cursor-pointer"
     >
       {/* Poster */}
       <div className="relative aspect-[2/3] overflow-hidden">

@@ -5,8 +5,6 @@ import { Outlet, useLocation } from "react-router-dom";
 const AppLayout = () => {
   const { pathname } = useLocation();
 
-  // هل نحن في صفحة تفاصيل الفيلم؟
-  // إذا كانت الإجابة نعم، سنلغي الـ Padding والـ Width المقيّد لنسمح للخلفية بالانتشار
   const isMoviePage = pathname.startsWith("/movie/");
 
   return (
@@ -14,10 +12,10 @@ const AppLayout = () => {
       <Navbar />
 
       <main
-        className={`mx-auto animate-fadeIn flex-grow transition-all duration-500 ${
+        className={`flex-grow mx-auto w-full animate-fadeIn transition-all duration-500 ${
           isMoviePage
-            ? "w-full" // في صفحة الفيلم خذ العرض الكامل
-            : "w-[90%] max-w-[1400px] pt-6 pb-12" // في باقي الصفحات التزم بالتنسيق القديم
+            ? "px-0"
+            : "px-4 sm:px-6 lg:px-8 max-w-[1400px] py-6 sm:py-8 md:py-10"
         }`}
       >
         <Outlet />

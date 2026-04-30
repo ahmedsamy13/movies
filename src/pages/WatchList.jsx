@@ -9,9 +9,9 @@ export default function WatchList() {
   const watchList = useSelector((state) => state.watchList.watchList);
   const dispatch = useDispatch();
   return (
-    <div className="min-h-screen bg-[#0a0a0a] text-white px-4 md:px-8 py-10">
+    <div className="text-white">
       {/* Header */}
-      <div className="max-w-7xl mx-auto mb-10">
+      <div className="mb-10">
         <h1 className="text-3xl md:text-5xl font-extrabold mb-3">
           My Watch List
         </h1>
@@ -23,7 +23,7 @@ export default function WatchList() {
 
       {/* Empty */}
       {watchList.length === 0 ? (
-        <div className="max-w-7xl mx-auto flex flex-col items-center justify-center py-24 text-center">
+        <div className="flex flex-col items-center justify-center py-24 text-center">
           <h2 className="text-2xl font-bold mb-3">Your watch list is empty</h2>
 
           <p className="text-zinc-400 mb-6">Start adding movies or TV shows.</p>
@@ -38,7 +38,7 @@ export default function WatchList() {
       ) : (
         <>
           {/* Counter */}
-          <div className="max-w-7xl mx-auto mb-6">
+          <div className="mb-6">
             <span className="text-zinc-400 text-sm">
               {watchList.length} Items
             </span>
@@ -50,7 +50,7 @@ export default function WatchList() {
             Clear Watch List
           </button>
           {/* Grid */}
-          <div className="max-w-7xl mx-auto grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
             {watchList.map((item) => {
               return (
                 <div
