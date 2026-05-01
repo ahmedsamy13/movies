@@ -1,5 +1,5 @@
 import { useSelector, useDispatch } from "react-redux";
-import { Link, NavLink, useNavigate } from "react-router-dom";
+import { Link, NavLink, useLocation, useNavigate } from "react-router-dom";
 import { logoutUser } from "@/features/auth/authSlice";
 import { useState } from "react";
 
@@ -8,7 +8,8 @@ const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
-
+  const { pathname } = useLocation();
+  const isSearchPage = pathname.startsWith("/search");
   const handleLogout = async () => {
     await dispatch(logoutUser());
     navigate("/login");
@@ -68,7 +69,10 @@ const Navbar = () => {
         {/* 3. Search & User Actions */}
         <div className="flex items-center gap-3 flex-1 justify-end">
           {/* Desktop Search */}
-          <div className="relative hidden lg:block group">
+          <div
+            className={`relative hidden lg:block group
+            ${isSearchPage ? "lg:hidden" : ""}`}
+          >
             <svg
               className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-zinc-500 group-focus-within:text-blue-500 transition-colors"
               fill="none"

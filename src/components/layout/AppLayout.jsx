@@ -5,8 +5,6 @@ import { Outlet, useLocation } from "react-router-dom";
 const AppLayout = () => {
   const { pathname } = useLocation();
 
-  // هل نحن في صفحة تفاصيل الفيلم؟
-  // إذا كانت الإجابة نعم، سنلغي الـ Padding والـ Width المقيّد لنسمح للخلفية بالانتشار
   const isMoviePage = pathname.startsWith("/movie/");
 
   return (
