@@ -30,10 +30,10 @@ const router = createBrowserRouter([
         children: [
           { path: "movies", element: <Movies /> },
           { path: "movies/:movieId", element: <Movie /> },
-          { path: "/series", element: <TVs /> },
-          { path: "/series/:serieId", element: <TV /> },
+          { path: "series", element: <TVs /> },
+          { path: "series/:serieId", element: <TV /> },
           { path: "watchlist", element: <WatchList /> },
-          { path: "/search", element: <Search /> },
+          { path: "search", element: <Search /> },
         ],
       },
     ],
@@ -44,12 +44,10 @@ function App() {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    // جيب الـ session الحالية فوراً
     supabase.auth.getSession().then(({ data }) => {
       dispatch(setSession(data.session?.user || null));
     });
 
-    // استنى أي تغيير
     const { data: listener } = supabase.auth.onAuthStateChange(
       (_event, session) => {
         dispatch(setSession(session?.user || null));
