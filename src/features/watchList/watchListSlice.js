@@ -4,7 +4,6 @@ const savedWatchList = JSON.parse(localStorage.getItem("watchList")) || [];
 
 const initialState = {
   watchList: savedWatchList,
-  // watchList: [],
 };
 
 const watchListSlice = createSlice({
@@ -13,14 +12,18 @@ const watchListSlice = createSlice({
 
   reducers: {
     addItem(state, action) {
-      state.watchList.push(action.payload);
+      // Prevent duplicates
+      const exists = state.watchList.some(
+        (item) => String(item.id) === String(action.payload.id),
+      );
+      if (exists) return;
 
+      state.watchList.push(action.payload);
       localStorage.setItem("watchList", JSON.stringify(state.watchList));
     },
 
     clearWatchList(state) {
       state.watchList = [];
-
       localStorage.setItem("watchList", JSON.stringify([]));
     },
 
@@ -28,7 +31,6 @@ const watchListSlice = createSlice({
       state.watchList = state.watchList.filter(
         (item) => String(item.id) !== String(action.payload),
       );
-
       localStorage.setItem("watchList", JSON.stringify(state.watchList));
     },
   },

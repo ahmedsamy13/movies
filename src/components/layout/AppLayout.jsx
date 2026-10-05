@@ -1,11 +1,18 @@
 import Navbar from "./Navbar";
 import Footer from "./Footer";
 import { Outlet, useLocation } from "react-router-dom";
+import { useEffect } from "react";
 
 const AppLayout = () => {
   const { pathname } = useLocation();
 
-  const isMoviePage = pathname.startsWith("/movie/");
+  // Scroll to top on route change
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }, [pathname]);
+
+  const isDetailPage =
+    pathname.startsWith("/movies/") || pathname.startsWith("/series/");
 
   return (
     <div className="min-h-screen flex flex-col bg-[#0a0a0a] text-white">
@@ -13,9 +20,9 @@ const AppLayout = () => {
 
       <main
         className={`mx-auto animate-fadeIn flex-grow transition-all duration-500 ${
-          isMoviePage
-            ? "w-full" // في صفحة الفيلم خذ العرض الكامل
-            : "w-[90%] max-w-[1400px] pt-6 pb-12" // في باقي الصفحات التزم بالتنسيق القديم
+          isDetailPage
+            ? "w-full"
+            : "w-[90%] max-w-[1400px] pt-6 pb-12"
         }`}
       >
         <Outlet />
