@@ -195,7 +195,7 @@ export default function Tv() {
                 <>
                   <span className="text-gray-600">•</span>
                   <span className="text-yellow-400 font-bold">
-                    ★{" "}
+                    ⭐{" "}
                     {tv.ratings?.imdb?.rating || tv.ratings?.simkl?.rating}
                   </span>
                 </>
@@ -231,7 +231,7 @@ export default function Tv() {
                     : "bg-zinc-800 hover:bg-zinc-700 text-white"
                 }`}
               >
-                {isInWatchList ? "In My List" : "+ My List"}
+                {isInWatchList ? "✓ In My List" : "+ My List"}
               </button>
               <button
                 onClick={handleShare}

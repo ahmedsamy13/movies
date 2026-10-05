@@ -205,7 +205,7 @@ export default function Movie() {
                 <>
                   <span className="text-gray-600">•</span>
                   <span className="text-yellow-400 font-bold">
-                    ★{" "}
+                    ⭐{" "}
                     {movie.ratings?.imdb?.rating ||
                       movie.ratings?.simkl?.rating}
                   </span>
@@ -242,7 +242,7 @@ export default function Movie() {
                     : "bg-zinc-800 hover:bg-zinc-700 text-white"
                 }`}
               >
-                {isInWatchList ? "In My List" : "+ My List"}
+                {isInWatchList ? "✓ In My List" : "+ My List"}
               </button>
               <button
                 onClick={handleShare}

@@ -143,7 +143,7 @@ export default function Card({ show }) {
         {/* Rating + Add button */}
         <div className="flex items-center justify-between mt-2 pt-2 border-t border-white/[0.07]">
           <div className="flex items-center gap-1 text-[11px] text-white/70">
-            <span className="text-[#f5c518] font-bold">★</span>
+            <span className="text-[#f5c518] text-sm">⭐</span>
             {show.ratings?.simkl?.rating || show.ratings?.imdb?.rating || "–"}
           </div>
           <button

@@ -3,11 +3,13 @@ import { Link, NavLink, useLocation, useNavigate } from "react-router-dom";
 import { logoutUser } from "@/features/auth/authSlice";
 import { useState, useRef } from "react";
 import useClickOutside from "@/hooks/useClickOutside";
+import ConfirmModal from "@/components/ui/ConfirmModal";
 
 const Navbar = () => {
   const { isAuthenticated, user } = useSelector((state) => state.auth);
   const watchList = useSelector((state) => state.watchList.watchList);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isLogoutModalOpen, setIsLogoutModalOpen] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { pathname } = useLocation();
@@ -19,19 +21,17 @@ const Navbar = () => {
     if (isMenuOpen) setIsMenuOpen(false);
   });
 
-  const handleLogout = async () => {
-    if (window.confirm("Are you sure you want to log out?")) {
-      await dispatch(logoutUser());
-      navigate("/login");
-      setIsMenuOpen(false);
-    }
+  const confirmLogout = async () => {
+    await dispatch(logoutUser());
+    navigate("/login");
+    setIsMenuOpen(false);
   };
 
   const navLinks = [
-    { name: "Home", path: "/home" },
-    { name: "Movies", path: "/movies" },
-    { name: "Series", path: "/series" },
-    { name: "Watchlist", path: "/watchlist" },
+    { name: "Home", path: "/home", icon: "🏠" },
+    { name: "Movies", path: "/movies", icon: "🎬" },
+    { name: "Series", path: "/series", icon: "📺" },
+    { name: "Watchlist", path: "/watchlist", icon: "📋" },
   ];
 
   return (
@@ -136,7 +136,7 @@ const Navbar = () => {
                 {user?.email?.[0]?.toUpperCase() || "?"}
               </div>
               <button
-                onClick={handleLogout}
+                onClick={() => setIsLogoutModalOpen(true)}
                 className="text-zinc-400 hover:text-red-400 text-sm font-medium transition-colors flex items-center gap-1.5"
               >
                 Logout
@@ -199,7 +199,7 @@ const Navbar = () => {
                   }`
                 }
               >
-                <span className="text-xl"></span>
+                <span className="text-xl">{link.icon}</span>
                 {link.name}
                 {link.name === "Watchlist" && watchList.length > 0 && (
                   <span className="bg-white/20 text-white text-xs font-bold px-2 py-0.5 rounded-full ml-auto">
@@ -222,7 +222,7 @@ const Navbar = () => {
                 </div>
               </div>
               <button
-                onClick={handleLogout}
+                onClick={() => setIsLogoutModalOpen(true)}
                 className="w-full p-4 rounded-2xl bg-red-500/10 text-red-400 font-bold text-lg transition-all flex items-center justify-center gap-2 border border-red-500/20 active:scale-95"
               >
                 <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -234,6 +234,15 @@ const Navbar = () => {
           )}
         </div>
       </div>
+
+      <ConfirmModal
+        isOpen={isLogoutModalOpen}
+        onClose={() => setIsLogoutModalOpen(false)}
+        onConfirm={confirmLogout}
+        title="Log Out"
+        message="Are you sure you want to log out of your account?"
+        confirmText="Log Out"
+      />
     </nav>
   );
 };

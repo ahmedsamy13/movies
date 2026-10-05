@@ -3,10 +3,10 @@ import search from "@/services/search";
 import Card from "@/components/ui/card";
 
 const FILTER_TABS = [
-  { key: "all", label: "All" },
-  { key: "movie", label: "Movies" },
-  { key: "tv", label: "TV Shows" },
-  { key: "anime", label: "Anime" },
+  { key: "all", label: "All", emoji: "🎯" },
+  { key: "movie", label: "Movies", emoji: "🎬" },
+  { key: "tv", label: "TV Shows", emoji: "📺" },
+  { key: "anime", label: "Anime", emoji: "🌸" },
 ];
 
 export default function Search() {
@@ -167,7 +167,7 @@ export default function Search() {
                   : "bg-zinc-900/60 border-white/5 text-zinc-400 hover:text-white hover:bg-zinc-800 hover:border-white/10"
               }`}
             >
-              <span className="text-base drop-shadow-sm"></span>
+              <span className="text-base drop-shadow-sm">{tab.emoji}</span>
               {tab.label}
               {counts[tab.key] > 0 && (
                 <span

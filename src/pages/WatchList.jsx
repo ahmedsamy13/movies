@@ -5,16 +5,13 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { useState } from "react";
+import ConfirmModal from "@/components/ui/ConfirmModal";
 
 export default function WatchList() {
   const watchList = useSelector((state) => state.watchList.watchList);
   const dispatch = useDispatch();
-  const [showConfirm, setShowConfirm] = useState(false);
-
-  const handleClear = () => {
-    dispatch(clearWatchList());
-    setShowConfirm(false);
-  };
+  const [itemToRemove, setItemToRemove] = useState(null);
+  const [isClearAllModalOpen, setIsClearAllModalOpen] = useState(false);
 
   return (
     <div className="text-white min-h-[70vh]">
@@ -64,30 +61,12 @@ export default function WatchList() {
               {watchList.length} Item{watchList.length !== 1 ? "s" : ""}
             </span>
 
-            {!showConfirm ? (
-              <button
-                onClick={() => setShowConfirm(true)}
-                className="px-5 py-2 rounded-xl bg-zinc-900 hover:bg-red-600/20 border border-zinc-800 hover:border-red-500/50 text-zinc-400 hover:text-red-400 transition-all text-sm font-medium"
-              >
-                Clear All
-              </button>
-            ) : (
-              <div className="flex items-center gap-2 animate-scaleIn">
-                <span className="text-zinc-500 text-sm">Are you sure?</span>
-                <button
-                  onClick={handleClear}
-                  className="px-4 py-2 rounded-xl bg-red-600 hover:bg-red-700 text-white text-sm font-semibold transition-all active:scale-95"
-                >
-                  Yes, Clear
-                </button>
-                <button
-                  onClick={() => setShowConfirm(false)}
-                  className="px-4 py-2 rounded-xl bg-zinc-800 hover:bg-zinc-700 text-zinc-300 text-sm font-medium transition-all"
-                >
-                  Cancel
-                </button>
-              </div>
-            )}
+            <button
+              onClick={() => setIsClearAllModalOpen(true)}
+              className="px-5 py-2 rounded-xl bg-zinc-900 hover:bg-red-600/20 border border-zinc-800 hover:border-red-500/50 text-zinc-400 hover:text-red-400 transition-all text-sm font-medium"
+            >
+              Clear All
+            </button>
           </div>
 
           {/* Grid */}
@@ -134,17 +113,13 @@ export default function WatchList() {
                     <div className="flex items-center justify-between text-xs text-zinc-400 mb-3">
                       <span>{item.year || "N/A"}</span>
                       <span className="text-yellow-400 font-semibold">
-                        ★ {item.rating || "–"}
+                        ⭐ {item.rating || "–"}
                       </span>
                     </div>
 
                     {/* Remove button */}
                     <button
-                      onClick={() => {
-                        if (window.confirm("Are you sure you want to remove this item?")) {
-                          dispatch(removeItem(item.id));
-                        }
-                      }}
+                      onClick={() => setItemToRemove(item.id)}
                       className="w-full py-2 rounded-xl bg-zinc-800 text-zinc-400 hover:bg-red-600/20 hover:text-red-400 hover:border-red-500/30 border border-zinc-700 transition-all active:scale-95 text-sm font-medium"
                     >
                       Remove
@@ -156,6 +131,24 @@ export default function WatchList() {
           </div>
         </>
       )}
+
+      <ConfirmModal
+        isOpen={!!itemToRemove}
+        onClose={() => setItemToRemove(null)}
+        onConfirm={() => dispatch(removeItem(itemToRemove))}
+        title="Remove Item"
+        message="Are you sure you want to remove this from your watchlist?"
+        confirmText="Remove"
+      />
+
+      <ConfirmModal
+        isOpen={isClearAllModalOpen}
+        onClose={() => setIsClearAllModalOpen(false)}
+        onConfirm={() => dispatch(clearWatchList())}
+        title="Clear Watchlist"
+        message="Are you sure you want to remove all items from your watchlist? This action cannot be undone."
+        confirmText="Clear All"
+      />
     </div>
   );
 }
