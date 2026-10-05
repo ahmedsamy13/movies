@@ -51,7 +51,7 @@ export default function Movies() {
   return (
     <div className="min-h-screen bg-[#0a0a0a] text-white">
       {/* Header */}
-      <div className="max-w-7xl mx-auto px-4 pt-4 pb-2">
+      <div className="pt-4 pb-2">
         <h1 className="text-3xl md:text-4xl font-extrabold mb-1 animate-fadeIn">
           Movies
         </h1>
@@ -61,8 +61,8 @@ export default function Movies() {
       </div>
 
       {/* Tabs */}
-      <div className="flex justify-center">
-        <div className="bg-[#0a0a0a]/90 backdrop-blur-md border-b border-zinc-800">
+      <div className="flex justify-center -mx-4 sm:-mx-6 md:-mx-8 mb-6">
+        <div className="w-full bg-[#0a0a0a]/90 backdrop-blur-md border-b border-zinc-800">
           <div className="max-w-7xl mx-auto px-4 py-3 overflow-x-auto scrollbar-hide">
             <Taps
               tabs={tabs}
@@ -75,9 +75,9 @@ export default function Movies() {
 
       {/* Loading */}
       {loading && (
-        <div className="max-w-7xl mx-auto px-4 py-8">
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
-            {Array.from({ length: 10 }).map((_, i) => (
+        <div className="py-2">
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4 sm:gap-6">
+            {Array.from({ length: 12 }).map((_, i) => (
               <div
                 key={i}
                 className="rounded-[14px] overflow-hidden bg-zinc-900 animate-pulse"
@@ -95,7 +95,7 @@ export default function Movies() {
 
       {/* Error */}
       {error && (
-        <div className="max-w-7xl mx-auto px-4 py-20 text-center">
+        <div className="py-20 text-center">
           <div className="w-16 h-16 rounded-full bg-red-500/10 flex items-center justify-center mx-auto mb-4">
             <span className="text-3xl">⚠️</span>
           </div>
@@ -114,7 +114,7 @@ export default function Movies() {
 
       {/* Movies Grid */}
       {!loading && !error && (
-        <div className="max-w-7xl mx-auto px-4 py-8">
+        <div className="py-2">
           {processedMovies.length === 0 ? (
             <div className="flex flex-col items-center justify-center py-20 gap-3">
               <span className="text-5xl">🎬</span>
@@ -134,7 +134,7 @@ export default function Movies() {
                 {processedMovies.length} movie
                 {processedMovies.length !== 1 ? "s" : ""}
               </p>
-              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6 stagger-children">
+              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4 sm:gap-6 stagger-children">
                 {processedMovies.map((movie) => (
                   <Card
                     key={movie.ids?.simkl_id ?? movie.title}

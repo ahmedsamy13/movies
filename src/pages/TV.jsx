@@ -157,9 +157,9 @@ export default function Tv() {
 
       {/* Content */}
       <div className="max-w-6xl mx-auto px-6 -mt-24 md:-mt-48 relative z-10">
-        <div className="flex flex-col md:flex-row gap-8 md:gap-10 items-start animate-fadeInUp">
+        <div className="flex flex-col md:flex-row gap-8 md:gap-10 items-center md:items-start animate-fadeInUp">
           {/* Poster */}
-          <div className="w-36 md:w-1/3 lg:w-1/4 flex-shrink-0">
+          <div className="w-48 sm:w-56 md:w-1/3 lg:w-1/4 flex-shrink-0">
             {posterUrl ? (
               <img
                 src={posterUrl}

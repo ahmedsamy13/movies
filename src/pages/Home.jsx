@@ -322,8 +322,8 @@ const Home = () => {
     .sort((a, b) => b.ratings.imdb.rating - a.ratings.imdb.rating);
 
   return (
-    <div className="min-h-screen bg-[#0a0a0a] text-white">
-      <div className="max-w-7xl mx-auto px-4 py-8">
+    <div className="min-h-screen text-white">
+      <div className="py-2">
         {/* Welcome greeting */}
         {isAuthenticated && (
           <div className="mb-6 flex items-center gap-2">

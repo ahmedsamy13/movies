@@ -19,10 +19,10 @@ const AppLayout = () => {
       <Navbar />
 
       <main
-        className={`mx-auto animate-fadeIn flex-grow transition-all duration-500 ${
+        className={`mx-auto animate-fadeIn flex-grow transition-all duration-500 w-full ${
           isDetailPage
-            ? "w-full"
-            : "w-[90%] max-w-[1400px] pt-6 pb-12"
+            ? ""
+            : "max-w-[1400px] px-4 sm:px-6 md:px-8 pt-6 pb-12"
         }`}
       >
         <Outlet />
