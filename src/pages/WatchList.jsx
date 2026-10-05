@@ -31,8 +31,8 @@ export default function WatchList() {
       {/* Empty */}
       {watchList.length === 0 ? (
         <div className="flex flex-col items-center justify-center py-24 text-center animate-fadeIn">
-          <div className="w-24 h-24 rounded-full bg-zinc-900/80 flex items-center justify-center border border-zinc-800 mb-6">
-            <span className="text-5xl">📋</span>
+          <div className="w-24 h-24 rounded-full bg-zinc-900/80 flex items-center justify-center border border-zinc-800 mb-6 text-zinc-500 font-bold text-2xl">
+            Empty
           </div>
           <h2 className="text-2xl font-bold mb-3">
             Your watch list is empty
@@ -114,8 +114,8 @@ export default function WatchList() {
                           loading="lazy"
                         />
                       ) : (
-                        <div className="w-full h-full flex items-center justify-center text-4xl">
-                          🎬
+                        <div className="w-full h-full flex items-center justify-center text-zinc-600 bg-zinc-800 font-bold">
+                          No Image
                         </div>
                       )}
 
@@ -134,13 +134,17 @@ export default function WatchList() {
                     <div className="flex items-center justify-between text-xs text-zinc-400 mb-3">
                       <span>{item.year || "N/A"}</span>
                       <span className="text-yellow-400 font-semibold">
-                        ⭐ {item.rating || "–"}
+                        ★ {item.rating || "–"}
                       </span>
                     </div>
 
                     {/* Remove button */}
                     <button
-                      onClick={() => dispatch(removeItem(item.id))}
+                      onClick={() => {
+                        if (window.confirm("Are you sure you want to remove this item?")) {
+                          dispatch(removeItem(item.id));
+                        }
+                      }}
                       className="w-full py-2 rounded-xl bg-zinc-800 text-zinc-400 hover:bg-red-600/20 hover:text-red-400 hover:border-red-500/30 border border-zinc-700 transition-all active:scale-95 text-sm font-medium"
                     >
                       Remove

@@ -14,31 +14,34 @@ const Navbar = () => {
   const isSearchPage = pathname.startsWith("/search");
   const menuRef = useRef(null);
 
-  useClickOutside(menuRef, () => {
+  useClickOutside(menuRef, (e) => {
+    if (e.target.closest('#burger-button')) return;
     if (isMenuOpen) setIsMenuOpen(false);
   });
 
   const handleLogout = async () => {
-    await dispatch(logoutUser());
-    navigate("/login");
-    setIsMenuOpen(false);
+    if (window.confirm("Are you sure you want to log out?")) {
+      await dispatch(logoutUser());
+      navigate("/login");
+      setIsMenuOpen(false);
+    }
   };
 
   const navLinks = [
-    { name: "Home", path: "/home", icon: "🏠" },
-    { name: "Movies", path: "/movies", icon: "🎬" },
-    { name: "Series", path: "/series", icon: "📺" },
-    { name: "Watchlist", path: "/watchlist", icon: "📋" },
+    { name: "Home", path: "/home" },
+    { name: "Movies", path: "/movies" },
+    { name: "Series", path: "/series" },
+    { name: "Watchlist", path: "/watchlist" },
   ];
 
   return (
-    <nav className="bg-[#0f0f11]/95 backdrop-blur-2xl border-b border-white/5 sticky top-0 z-[100] px-4 md:px-8 py-3 shadow-xl">
+    <nav className="bg-[#0f0f11] border-b border-white/5 sticky top-0 z-[100] px-4 md:px-8 py-3 shadow-xl">
       <div className="max-w-7xl mx-auto flex items-center justify-between gap-4 md:gap-8">
         {/* 1. Logo (Left) */}
         <Link to="/home" className="flex items-center gap-3 z-[110] flex-shrink-0">
           <div className="relative w-10 h-10 flex-shrink-0">
-            <div className="w-10 h-10 bg-gradient-to-br from-blue-600 to-indigo-800 rounded-xl flex items-center justify-center shadow-lg shadow-blue-500/30">
-              <span className="text-xl">🎬</span>
+            <div className="w-10 h-10 bg-gradient-to-br from-blue-600 to-indigo-800 rounded-xl flex items-center justify-center shadow-lg shadow-blue-500/30 text-white font-bold text-xl">
+              M
             </div>
             <span className="absolute -top-0.5 -right-0.5 w-3 h-3 bg-red-500 rounded-full border-[3px] border-[#0f0f11]" />
           </div>
@@ -143,6 +146,7 @@ const Navbar = () => {
 
           {/* Burger Button (Mobile) */}
           <button
+            id="burger-button"
             onClick={() => setIsMenuOpen(!isMenuOpen)}
             className="md:hidden p-2.5 text-zinc-400 hover:text-white bg-zinc-900/80 rounded-xl border border-zinc-800 z-[110]"
           >
@@ -157,7 +161,7 @@ const Navbar = () => {
 
       {/* Mobile Menu Overlay */}
       <div
-        className={`fixed inset-0 bg-[#0f0f11]/98 backdrop-blur-3xl z-[100] md:hidden flex flex-col pt-24 px-6 gap-6 transition-all duration-300 ease-out ${
+        className={`fixed inset-0 bg-[#0f0f11] z-[100] md:hidden flex flex-col pt-24 px-6 gap-6 transition-all duration-300 ease-out ${
           isMenuOpen
             ? "opacity-100 translate-x-0"
             : "opacity-0 translate-x-full pointer-events-none"
@@ -195,7 +199,7 @@ const Navbar = () => {
                   }`
                 }
               >
-                <span className="text-xl">{link.icon}</span>
+                <span className="text-xl"></span>
                 {link.name}
                 {link.name === "Watchlist" && watchList.length > 0 && (
                   <span className="bg-white/20 text-white text-xs font-bold px-2 py-0.5 rounded-full ml-auto">

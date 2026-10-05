@@ -10,8 +10,8 @@ const Footer = () => {
           {/* Logo Section */}
           <Link to="/home" className="flex items-center gap-2">
             <div className="relative w-9 h-9 flex-shrink-0">
-              <div className="w-9 h-9 bg-gradient-to-br from-blue-600 to-blue-800 rounded-xl flex items-center justify-center shadow-lg shadow-blue-500/20">
-                <span className="text-lg">🎬</span>
+              <div className="w-9 h-9 bg-gradient-to-br from-blue-600 to-blue-800 rounded-xl flex items-center justify-center shadow-lg shadow-blue-500/20 text-white font-bold text-lg">
+                M
               </div>
               <span className="absolute -top-0.5 -right-0.5 w-2.5 h-2.5 bg-red-500 rounded-full border-2 border-zinc-950" />
             </div>
@@ -66,7 +66,7 @@ const Footer = () => {
             Powered by Simkl API
           </p>
           <p className="text-[10px] text-zinc-700">
-            Built with React, Redux & ❤️
+            Built with React & Redux
           </p>
         </div>
       </div>

@@ -74,8 +74,8 @@ export default function Card({ show }) {
             loading="lazy"
           />
         ) : (
-          <div className="w-full h-full flex items-center justify-center text-4xl bg-zinc-800">
-            🎬
+          <div className="w-full h-full flex items-center justify-center text-zinc-600 bg-zinc-800 font-bold">
+            No Image
           </div>
         )}
 
@@ -143,7 +143,7 @@ export default function Card({ show }) {
         {/* Rating + Add button */}
         <div className="flex items-center justify-between mt-2 pt-2 border-t border-white/[0.07]">
           <div className="flex items-center gap-1 text-[11px] text-white/70">
-            <span className="text-[#f5c518]">★</span>
+            <span className="text-[#f5c518] font-bold">★</span>
             {show.ratings?.simkl?.rating || show.ratings?.imdb?.rating || "–"}
           </div>
           <button

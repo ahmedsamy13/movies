@@ -3,10 +3,10 @@ import search from "@/services/search";
 import Card from "@/components/ui/card";
 
 const FILTER_TABS = [
-  { key: "all", label: "All", emoji: "🎯" },
-  { key: "movie", label: "Movies", emoji: "🎬" },
-  { key: "tv", label: "TV Shows", emoji: "📺" },
-  { key: "anime", label: "Anime", emoji: "🌸" },
+  { key: "all", label: "All" },
+  { key: "movie", label: "Movies" },
+  { key: "tv", label: "TV Shows" },
+  { key: "anime", label: "Anime" },
 ];
 
 export default function Search() {
@@ -36,7 +36,7 @@ export default function Search() {
     timer.current = setTimeout(async () => {
       try {
         const data = await search(value);
-        setResults(data);
+        setResults(Array.isArray(data) ? data : []);
         setSearched(true);
       } catch (err) {
         console.error(err);
@@ -72,7 +72,7 @@ export default function Search() {
   return (
     <div className="text-white min-h-[70vh]">
       {/* Search Header */}
-      <div className="mb-8">
+      <div className="mb-8 text-center">
         <h1 className="text-3xl md:text-4xl font-extrabold mb-2 animate-fadeIn">
           Search
         </h1>
@@ -82,7 +82,7 @@ export default function Search() {
       </div>
 
       {/* Search Input */}
-      <div className="max-w-2xl relative mb-6 animate-fadeInUp">
+      <div className="max-w-2xl mx-auto relative mb-6 animate-fadeInUp">
         <span className="absolute left-4 top-1/2 -translate-y-1/2 text-zinc-500">
           <svg
             className="w-5 h-5"
@@ -156,25 +156,25 @@ export default function Search() {
 
       {/* Filter Tabs — only show when we have results */}
       {results.length > 0 && (
-        <div className="flex gap-2 mb-6 flex-wrap animate-fadeIn">
+        <div className="flex justify-center gap-3 mb-8 flex-wrap animate-fadeIn">
           {FILTER_TABS.map((tab) => (
             <button
               key={tab.key}
               onClick={() => setActiveFilter(tab.key)}
-              className={`px-4 py-2 rounded-xl text-sm font-medium transition-all duration-200 flex items-center gap-1.5 ${
+              className={`px-5 py-2.5 rounded-2xl text-sm font-semibold transition-all duration-300 flex items-center gap-2 border ${
                 activeFilter === tab.key
-                  ? "bg-blue-600 text-white shadow-lg shadow-blue-500/20"
-                  : "bg-zinc-900 text-zinc-400 border border-zinc-800 hover:text-white hover:bg-zinc-800"
+                  ? "bg-gradient-to-br from-blue-600 to-indigo-700 border-transparent text-white shadow-lg shadow-blue-500/25 scale-105"
+                  : "bg-zinc-900/60 border-white/5 text-zinc-400 hover:text-white hover:bg-zinc-800 hover:border-white/10"
               }`}
             >
-              <span className="text-sm">{tab.emoji}</span>
+              <span className="text-base drop-shadow-sm"></span>
               {tab.label}
               {counts[tab.key] > 0 && (
                 <span
-                  className={`text-[10px] font-bold px-1.5 py-0.5 rounded-full ${
+                  className={`text-[10px] font-bold px-2 py-0.5 rounded-full min-w-[20px] text-center transition-colors ${
                     activeFilter === tab.key
-                      ? "bg-white/20"
-                      : "bg-zinc-800 text-zinc-500"
+                      ? "bg-black/20 text-white"
+                      : "bg-zinc-800/80 text-zinc-500"
                   }`}
                 >
                   {counts[tab.key]}
@@ -189,7 +189,7 @@ export default function Search() {
       <div className="py-2">
         {filteredResults.length > 0 && (
           <>
-            <p className="text-zinc-500 text-sm mb-6">
+            <p className="text-zinc-500 text-sm mb-6 text-center">
               {filteredResults.length} result
               {filteredResults.length !== 1 ? "s" : ""} for{" "}
               <span className="text-white/80 font-medium">"{query}"</span>
@@ -211,7 +211,7 @@ export default function Search() {
           results.length > 0 &&
           filteredResults.length === 0 && (
             <div className="flex flex-col items-center justify-center py-20 gap-3 animate-fadeIn">
-              <span className="text-5xl">🔍</span>
+              <span className="text-5xl"></span>
               <p className="text-zinc-500 text-sm">
                 No {FILTER_TABS.find((t) => t.key === activeFilter)?.label} found
                 for <span className="text-white/70">"{query}"</span>
@@ -228,8 +228,8 @@ export default function Search() {
         {/* No results at all */}
         {searched && !loading && results.length === 0 && (
           <div className="flex flex-col items-center justify-center py-24 gap-4 animate-fadeIn">
-            <div className="w-20 h-20 rounded-full bg-zinc-900 flex items-center justify-center mb-2">
-              <span className="text-4xl">🎬</span>
+            <div className="w-20 h-20 rounded-full bg-zinc-900 flex items-center justify-center mb-2 text-zinc-500">
+              ?
             </div>
             <p className="text-zinc-400 text-base font-medium">
               No results found
@@ -245,8 +245,8 @@ export default function Search() {
         {/* Initial empty state */}
         {!query && (
           <div className="flex flex-col items-center justify-center py-24 gap-4 animate-fadeIn">
-            <div className="w-24 h-24 rounded-full bg-zinc-900/80 flex items-center justify-center border border-zinc-800 mb-2">
-              <span className="text-5xl">🍿</span>
+            <div className="w-24 h-24 rounded-full bg-zinc-900/80 flex items-center justify-center border border-zinc-800 mb-2 text-zinc-500 font-bold text-2xl">
+              Search
             </div>
             <p className="text-zinc-400 text-base font-medium">
               Search for your favorite movies & shows

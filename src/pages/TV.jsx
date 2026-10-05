@@ -47,7 +47,7 @@ export default function Tv() {
       type: "tv",
     };
     dispatch(addItem(newSerie));
-    setToastMsg("Added to watchlist! ✓");
+    setToastMsg("Added to watchlist!");
     setShowToast(true);
     setTimeout(() => setShowToast(false), 2500);
   }
@@ -60,7 +60,7 @@ export default function Tv() {
       });
     } else {
       navigator.clipboard.writeText(window.location.href);
-      setToastMsg("Link copied! 📋");
+      setToastMsg("Link copied!");
       setShowToast(true);
       setTimeout(() => setShowToast(false), 2000);
     }
@@ -89,8 +89,8 @@ export default function Tv() {
   if (error || !tv) {
     return (
       <div className="min-h-screen bg-[#0a0a0a] text-white flex flex-col items-center justify-center gap-4">
-        <div className="w-20 h-20 rounded-full bg-red-500/10 flex items-center justify-center mb-2">
-          <span className="text-4xl">📺</span>
+        <div className="w-20 h-20 rounded-full bg-red-500/10 flex items-center justify-center mb-2 text-red-500 font-bold text-3xl">
+          !
         </div>
         <h2 className="text-2xl font-bold">TV Show not found</h2>
         <p className="text-zinc-500 text-sm">
@@ -128,7 +128,7 @@ export default function Tv() {
           <img
             src={fanartUrl}
             className="w-full h-full object-cover scale-110 opacity-40"
-            alt="background"
+            alt=""
           />
         ) : (
           <div className="w-full h-full bg-gradient-to-br from-zinc-900 to-zinc-950" />
@@ -167,8 +167,8 @@ export default function Tv() {
                 alt={tv.title}
               />
             ) : (
-              <div className="w-full aspect-[2/3] rounded-2xl bg-zinc-800 flex items-center justify-center text-6xl">
-                📺
+              <div className="w-full aspect-[2/3] rounded-2xl bg-zinc-800 flex items-center justify-center text-zinc-600 font-bold">
+                No Poster
               </div>
             )}
           </div>
@@ -195,7 +195,7 @@ export default function Tv() {
                 <>
                   <span className="text-gray-600">•</span>
                   <span className="text-yellow-400 font-bold">
-                    ⭐{" "}
+                    ★{" "}
                     {tv.ratings?.imdb?.rating || tv.ratings?.simkl?.rating}
                   </span>
                 </>
@@ -231,7 +231,7 @@ export default function Tv() {
                     : "bg-zinc-800 hover:bg-zinc-700 text-white"
                 }`}
               >
-                {isInWatchList ? "✓ In My List" : "+ My List"}
+                {isInWatchList ? "In My List" : "+ My List"}
               </button>
               <button
                 onClick={handleShare}

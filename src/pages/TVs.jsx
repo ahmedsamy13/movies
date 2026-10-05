@@ -85,8 +85,8 @@ export default function Tvs() {
       {/* Error */}
       {error && (
         <div className="py-20 text-center">
-          <div className="w-16 h-16 rounded-full bg-red-500/10 flex items-center justify-center mx-auto mb-4">
-            <span className="text-3xl">⚠️</span>
+          <div className="w-16 h-16 rounded-full bg-red-500/10 flex items-center justify-center mx-auto mb-4 text-red-500 font-bold text-2xl">
+            !
           </div>
           <p className="text-red-400 font-medium mb-2">
             Failed to load TV shows
@@ -106,7 +106,7 @@ export default function Tvs() {
         <div className="py-2">
           {processedSeries.length === 0 ? (
             <div className="flex flex-col items-center justify-center py-20 gap-3">
-              <span className="text-5xl">📺</span>
+              <span className="text-2xl text-zinc-500 font-bold">No Results</span>
               <p className="text-zinc-400 font-medium">
                 No series found for this filter
               </p>

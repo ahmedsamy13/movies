@@ -30,8 +30,8 @@ export default function Login() {
         className="bg-zinc-900/80 p-8 md:p-10 rounded-3xl w-full max-w-md border border-zinc-800 shadow-2xl backdrop-blur-sm animate-fadeInUp"
       >
         <div className="text-center mb-8">
-          <div className="w-14 h-14 bg-gradient-to-br from-blue-600 to-blue-800 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-lg shadow-blue-500/20">
-            <span className="text-2xl">🎬</span>
+          <div className="w-14 h-14 bg-gradient-to-br from-blue-600 to-blue-800 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-lg shadow-blue-500/20 text-white font-bold text-2xl">
+            M
           </div>
           <h1 className="text-3xl font-black text-white">Welcome Back</h1>
           <p className="text-gray-500 text-sm mt-2">

@@ -40,7 +40,7 @@ function ScrollRow({ title, emoji, items, loading, linkTo }) {
       {/* Section header */}
       <div className="flex items-center justify-between mb-5 px-1">
         <div className="flex items-center gap-3">
-          <span className="text-2xl">{emoji}</span>
+          <span className="text-2xl"></span>
           <h2 className="text-white font-bold text-xl tracking-tight">
             {title}
           </h2>
@@ -273,10 +273,10 @@ function StatsStrip({ movies, tvs }) {
   }).length;
 
   const stats = [
-    { label: "Trending Movies", value: movies.length, icon: "🎬" },
-    { label: "Trending Series", value: tvs.length, icon: "📺" },
-    { label: "Highly Rated (8.5+)", value: topRated, icon: "⭐" },
-    { label: "New in 2025–26", value: newReleases, icon: "🆕" },
+    { label: "Trending Movies", value: movies.length },
+    { label: "Trending Series", value: tvs.length },
+    { label: "Highly Rated (8.5+)", value: topRated },
+    { label: "New in 2025–26", value: newReleases },
   ];
 
   if (!movies.length && !tvs.length) return null;
@@ -288,7 +288,7 @@ function StatsStrip({ movies, tvs }) {
           key={stat.label}
           className="bg-zinc-900/60 border border-zinc-800/60 rounded-xl px-4 py-4 flex items-center gap-3"
         >
-          <span className="text-2xl">{stat.icon}</span>
+          <span className="text-2xl"></span>
           <div>
             <div className="text-white font-bold text-xl">{stat.value}</div>
             <div className="text-zinc-500 text-xs">{stat.label}</div>
@@ -331,7 +331,7 @@ const Home = () => {
             <span className="text-white text-sm font-semibold">
               {user?.email?.split("@")[0]}
             </span>
-            <span className="text-lg">👋</span>
+            <span className="text-lg"></span>
           </div>
         )}
 
@@ -352,28 +352,24 @@ const Home = () => {
         <div>
           <ScrollRow
             title="Trending Movies"
-            emoji="🎬"
             items={movies}
             loading={moviesLoading}
             linkTo="/movies"
           />
           <ScrollRow
             title="Top Rated Movies"
-            emoji="⭐"
             items={topMovies}
             loading={moviesLoading}
             linkTo="/movies"
           />
           <ScrollRow
             title="Trending Series"
-            emoji="📺"
             items={tvs}
             loading={tvsLoading}
             linkTo="/series"
           />
           <ScrollRow
             title="New Releases"
-            emoji="🆕"
             items={newMovies}
             loading={moviesLoading}
             linkTo="/movies"
